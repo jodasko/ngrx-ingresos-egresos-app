@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -6,22 +6,32 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+import Swal from 'sweetalert2';
+
+/*NgRx */
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import * as ui from '../../shared/ui.actions';
 
 import { AuthService } from 'src/app/services/auth.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   registerForm!: FormGroup;
+  subscriptions!: Subscription;
+  isLoading!: boolean;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
@@ -30,6 +40,17 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
+
+    this.subscriptions = this.store.select('ui').subscribe((ui) => {
+      this.isLoading = ui.isLoading;
+      console.log('Loading Register');
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscriptions) {
+      this.subscriptions.unsubscribe();
+    }
   }
 
   // getters
@@ -55,20 +76,23 @@ export class RegisterComponent implements OnInit {
       return;
     }
     // preloading
-    Swal.fire({
-      title: 'Wait please!',
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
+    // Swal.fire({
+    //   title: 'Wait please!',
+    //   didOpen: () => {
+    //     Swal.showLoading();
+    //   },
+    // });
+    this.store.dispatch(ui.isLoading());
     const { fullName, email, password } = this.registerForm.value;
     this.authService
       .createNewUser(fullName, email, password)
       .then((credential) => {
-        Swal.close();
+        // Swal.close();
+        this.store.dispatch(ui.stopLoading());
         this.router.navigate(['/']);
       })
       .catch((err: Error) => {
+        this.store.dispatch(ui.stopLoading());
         Swal.fire({
           icon: 'error',
           title: 'Oops...',

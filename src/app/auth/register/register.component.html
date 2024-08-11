@@ -72,10 +72,13 @@
 
             <div class="form-group">
               <button
+                [type]="isLoading ? 'button' : 'submit'"
                 [disabled]="registerForm.invalid"
+                [ngClass]="isLoading ? 'btn-warning' : 'btn-primary'"
                 class="btn btn-primary submit-btn btn-block"
               >
-                Crear cuenta
+                <i *ngIf="isLoading" class="fa fa-spin fa-sync"></i>
+                {{ isLoading ? "wait..." : "Crear cuenta" }}
               </button>
             </div>
             <div class="text-block text-center my-3">
