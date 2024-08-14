@@ -46,10 +46,14 @@
           <button
             type="submit"
             [disabled]="ingresoEgresoForm.invalid"
-            class="btn btn-success mr-2"
+            class="btn mr-2"
+            [ngClass]="isLoading ? 'btn-warning' : 'btn-success'"
           >
-            <i class="fa fa-save"></i>
-            Agregar
+            <i
+              class="fa"
+              [ngClass]="isLoading ? 'fa fa-spin fa-sync' : 'fa-save'"
+            ></i>
+            {{ isLoading ? "saving" : "Agregar" }}
           </button>
 
           <!--

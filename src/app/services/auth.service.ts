@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
 import * as authAction from '../auth/auth.actions';
+import * as ingresoEgresoAction from '../ingreso-egreso/store/ingreso-egreso.actions';
 
 import { User } from '../models/user.model';
 
@@ -15,8 +16,12 @@ import { User } from '../models/user.model';
 })
 export class AuthService {
   userState$ = this.isAuth();
-
   userSubscription!: Subscription;
+  private _user!: User | null;
+
+  get user() {
+    return this._user;
+  }
 
   constructor(
     public auth: AngularFireAuth,
@@ -32,13 +37,21 @@ export class AuthService {
           .valueChanges()
           .subscribe((user: any) => {
             const fromFirebaseUser = User.fromFireBase(user);
+            this._user = user;
             this.store.dispatch(authAction.setUser({ user: fromFirebaseUser }));
           });
       } else {
-        // Does Not Exist
-        console.log('entra Does Not Exist');
-        this.userSubscription.unsubscribe();
+        // Does Not Exist or logout
+        console.log('CHAO');
+        // this._user = null;
         this.store.dispatch(authAction.unSetUser());
+
+        // TODO: It's not cleaning the items once login out
+        this.store.dispatch(ingresoEgresoAction.unSetItems());
+
+        if (this.userSubscription) {
+          this.userSubscription.unsubscribe();
+        }
       }
     });
   }

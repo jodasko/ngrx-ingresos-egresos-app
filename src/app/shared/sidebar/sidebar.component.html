@@ -8,9 +8,9 @@
           </div>
 
           <div class="text-wrapper">
-            <p class="profile-name">Cristobal Colón</p>
+            <p class="profile-name">{{ adminUser | titlecase }}</p>
             <div>
-              <small class="designation text-muted">Navegante</small>
+              <small class="designation text-muted">Admin</small>
             </div>
           </div>
         </div>
@@ -34,12 +34,12 @@
         <span class="menu-title">Detalle</span>
       </a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a routerLink="/posts" class="nav-link">
         <i class="menu-icon fa fa-table"></i>
         <span class="menu-title">Posts</span>
       </a>
-    </li>
+    </li> -->
     <li class="nav-item">
       <a (click)="logout()" class="nav-link cursor">
         <i class="menu-icon fa fa-sign-out-alt"></i>
