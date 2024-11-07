@@ -47,7 +47,7 @@ export class IngresoEgresoService {
             /**
              * ****extract all the props of collection from Firebase:
              * -- example
-             * id: "0ymAp7mOulVpB5oTIi67"
+             * id: "00ASDASDDASS"
              * amount: 1000
              * description: "home"
              * type: "expense"

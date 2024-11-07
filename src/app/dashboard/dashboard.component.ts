@@ -4,10 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
 import { Subscription } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
-import {
-  IncomeExpense,
-  IncomeExpenseModel,
-} from '../models/income-expense.model';
+import { IncomeExpenseModel } from '../models/income-expense.model';
 import * as ingresoEgresoAction from '../ingreso-egreso/store/ingreso-egreso.actions';
 
 @Component({
@@ -46,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     //   });
 
     /**
-     * Best practice
+     * Better approach
      */
     this.store
       .select('user')
@@ -58,7 +55,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
               authUser.user.uid
             );
           }
-          // Handle case where user is null or return an empty observable
           return [];
         })
       )

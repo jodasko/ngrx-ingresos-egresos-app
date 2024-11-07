@@ -1,13 +1,14 @@
-import { IngresoEgresoService } from './../../services/ingreso-egreso.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { AppState } from 'src/app/app.reducer';
-import {
-  IncomeExpense,
-  IncomeExpenseModel,
-} from 'src/app/models/income-expense.model';
+
+import { Store } from '@ngrx/store';
+import { getIncomeExpenses } from '../store/ingreso-egreso.reducers';
+
 import Swal from 'sweetalert2';
+
+import { IncomeExpenseModel } from 'src/app/models/income-expense.model';
+import { IngresoEgresoService } from './../../services/ingreso-egreso.service';
+import { AppState } from 'src/app/app.reducer';
 
 @Component({
   selector: 'app-detalle',
@@ -26,9 +27,9 @@ export class DetalleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.store
-      .select('IncomeExpense')
-      .subscribe((incomeExpenses) => {
-        this.incomeExpenses = incomeExpenses.items;
+      .select(getIncomeExpenses)
+      .subscribe((items) => {
+        this.incomeExpenses = items;
       });
   }
 

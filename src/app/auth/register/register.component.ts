@@ -43,7 +43,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     this.subscriptions = this.store.select('ui').subscribe((ui) => {
       this.isLoading = ui.isLoading;
-      console.log('Loading Register');
     });
   }
 
@@ -53,20 +52,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
   }
 
-  // getters
-  // get email() {
-  //   return this.registerForm.get('email') as FormControl;
-  // }
-
-  // get password() {
-  //   return this.registerForm.get('password') as FormControl;
-  // }
-
-  // get fullName() {
-  //   return this.registerForm.get('fullName') as FormControl;
-  // }
-
-  // better appoach
   getRegisterControl(controlName: string): FormControl {
     return this.registerForm.get(controlName) as FormControl;
   }

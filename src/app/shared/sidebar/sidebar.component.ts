@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AppState } from 'src/app/app.reducer';
 import { filter } from 'rxjs';
+import * as ingresoEgresoAction from '../../ingreso-egreso/store/ingreso-egreso.actions';
 
 @Component({
   selector: 'app-sidebar',
@@ -32,27 +33,7 @@ export class SidebarComponent implements OnInit {
   }
 
   logout() {
-    // this.authService
-    //   .logout()
-    //   .then(() => {
-    //     // preloading
-    //     Swal.fire({
-    //       title: 'bye bye!',
-    //       didOpen: () => {
-    //         Swal.showLoading();
-    //       },
-    //     });
-    //     // kill prealoading
-    //     Swal.close();
-    //     this.router.navigate(['/login']);
-    //   })
-    //   .catch((err: Error) => {
-    //     Swal.fire({
-    //       icon: 'error',
-    //       title: 'Oops...',
-    //       text: err.message,
-    //     });
-    //   });
+    this.store.dispatch(ingresoEgresoAction.unSetItems());
     this.authService
       .logout()
       .then(() => {

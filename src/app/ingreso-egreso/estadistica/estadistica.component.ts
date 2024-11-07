@@ -6,6 +6,7 @@ import { AppState } from 'src/app/app.reducer';
 import { ChartConfiguration } from 'chart.js';
 
 import { IncomeExpenseModel } from 'src/app/models/income-expense.model';
+import { getIncomeExpenses } from '../store/ingreso-egreso.reducers';
 
 @Component({
   selector: 'app-estadistica',
@@ -18,7 +19,7 @@ export class EstadisticaComponent implements OnInit {
   totalIncome = 0;
   totalExpense = 0;
 
-  // Doughnut
+  // Doughnut chart
   doughnutChartLabels: string[] = ['Incomes', 'Expenses'];
   doughnutChartDatasets: ChartConfiguration<'doughnut'>['data']['datasets'] = [
     { data: [0, 0] },
@@ -30,8 +31,8 @@ export class EstadisticaComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.store.select('IncomeExpense').subscribe((incomeExpense) => {
-      this.calculateStatistic(incomeExpense.items);
+    this.store.select(getIncomeExpenses).subscribe((items) => {
+      this.calculateStatistic(items);
     });
   }
 
